@@ -12,15 +12,15 @@ A small library to execute code with delay.
 
     void Update(){
         if(GetInputPressed(0, "t")){
-        timer.Add(DelayedExecutionJob(5.0f, function(){
-            Log(info, "5 Second Delay (Single)");
-            return false; // Stop here
-        }));
+            timer.Add(DelayedExecutionJob(5.0f, function(){
+                Log(info, "5 Second Delay (Single)");
+                return false; // Stop here
+            }));
 
-        timer.Add(DelayedExecutionJob(5.0f, function(){
-            Log(info, "5 Second Delay (Repeating)");
-            return true; // Do it again
-        }));
+            timer.Add(DelayedExecutionJob(5.0f, function(){
+                Log(info, "5 Second Delay (Repeating)");
+                return true; // Do it again
+            }));
         }
 
         timer.Update();
