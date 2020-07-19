@@ -1,0 +1,20 @@
+<? xml version="1.0" ?>
+<Mod>
+    <Id>com-surak-timed-execution</Id> 
+    <Name>Timed Execution</Name> 
+
+    <Category>Script</Category>
+
+    <Thumbnail>Data/Images/timed_execution/thumb.jpg</Thumbnail>
+    <PreviewImage>Data/Images/timed_execution/thumb.jpg</PreviewImage>
+
+    <Description>A small library to execute code with delay.</Description>
+    <Version>0.1.0</Version>
+    <Author>Surak</Author>
+	<Tag>library</Tag>
+	<Tag>scripting</Tag>
+
+	<SupportedVersion>*</SupportedVersion>
+    <NeedsRestart>false</NeedsRestart>
+	
+</Mod>
