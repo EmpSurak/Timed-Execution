@@ -1,19 +1,18 @@
-#include "execution_job_interface.as"
+#include "timed_execution/execution_job_interface.as"
 
-funcdef bool TIMED_CALLBACK();
+funcdef void TIMED_SIMPLE_CALLBACK();
 
-class DelayedExecutionJob : ExecutionJobInterface {
-    DelayedExecutionJob(){}
+class SimpleDelayedJob : ExecutionJobInterface {
+    SimpleDelayedJob(){}
 
-    DelayedExecutionJob(float _wait, TIMED_CALLBACK @_callback) {
+    SimpleDelayedJob(float _wait, TIMED_SIMPLE_CALLBACK @_callback) {
         wait = _wait;
         @callback = @_callback;
     }
 
     float wait;
-    TIMED_CALLBACK @callback;
+    TIMED_SIMPLE_CALLBACK @callback;
     float started;
-    bool repeat;
     
     float GetEndTime(){
         if(started == 0.0f){
@@ -24,11 +23,11 @@ class DelayedExecutionJob : ExecutionJobInterface {
     }
     
     void Execute(){
-        repeat = callback();
+        callback();
     }
     
     bool IsRepeating(){
-        return repeat;
+        return false;
     }
     
     bool IsExpired(float time){
