@@ -15,8 +15,8 @@ void Init(string str){
         Log(info, "Execute once after initialization is finished");
     }));
 
-    timer.Add(AfterCharInitJob(1, function(){
-        Log(info, "Execute once after character initialization is finished");
+    timer.Add(AfterCharInitJob(1, function(id){
+        Log(info, "Execute once after character " + id + " initialization is finished");
     }));
 }
 

@@ -1,6 +1,6 @@
 #include "timed_execution/execution_job_interface.as"
 
-funcdef void AFTER_CHAR_CALLBACK();
+funcdef void AFTER_CHAR_CALLBACK(int);
 
 class AfterCharInitJob : ExecutionJobInterface {
     AfterCharInitJob(){}
@@ -15,7 +15,7 @@ class AfterCharInitJob : ExecutionJobInterface {
     float started;
     
     void Execute(){
-        callback();
+        callback(id);
     }
     
     bool IsRepeating(){
