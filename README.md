@@ -1,7 +1,7 @@
 Timed Execution
 ===============
 
-A small library to execute code with delay.
+A small library to execute code with delay for [Overgrowth](https://www.wolfire.com/overgrowth).
 
 ## Example
 
