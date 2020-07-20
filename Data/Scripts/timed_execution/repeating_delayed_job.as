@@ -5,7 +5,7 @@ funcdef bool TIMED_REPEATING_CALLBACK();
 class RepeatingDelayedJob : ExecutionJobInterface {
     RepeatingDelayedJob(){}
 
-    RepeatingDelayedJob(float _wait, TIMED_REPEATING_CALLBACK @_callback) {
+    RepeatingDelayedJob(float _wait, TIMED_REPEATING_CALLBACK @_callback){
         wait = _wait;
         @callback = @_callback;
     }

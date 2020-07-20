@@ -5,7 +5,7 @@ funcdef float TIMED_REPEATING_DYNAMIC_CALLBACK();
 class RepeatingDynamicDelayedJob : ExecutionJobInterface {
     RepeatingDynamicDelayedJob(){}
 
-    RepeatingDynamicDelayedJob(float _wait, TIMED_REPEATING_DYNAMIC_CALLBACK @_callback) {
+    RepeatingDynamicDelayedJob(float _wait, TIMED_REPEATING_DYNAMIC_CALLBACK @_callback){
         wait = _wait;
         @callback = @_callback;
     }

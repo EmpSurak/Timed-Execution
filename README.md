@@ -6,6 +6,8 @@ A small library to execute code with delay for [Overgrowth](https://www.wolfire.
 ## Example
 
     #include "timed_execution/timed_execution.as"
+    #include "timed_execution/after_init_job.as"
+    #include "timed_execution/after_char_init_job.as"
     #include "timed_execution/simple_delayed_job.as"
     #include "timed_execution/repeating_delayed_job.as"
     #include "timed_execution/repeating_dynamic_delayed_job.as"
@@ -14,6 +16,16 @@ A small library to execute code with delay for [Overgrowth](https://www.wolfire.
 
     bool toggle = false;
     float counter = 5.0f;
+
+    void Init(string str){
+        timer.Add(AfterInitJob(function(){
+            Log(info, "Execute once after initialization is finished");
+        }));
+
+        timer.Add(AfterCharInitJob(1, function(){
+            Log(info, "Execute once after character initialization is finished");
+        }));
+    }
 
     void Update(int is_paused){
         if(GetInputPressed(0, "t")){

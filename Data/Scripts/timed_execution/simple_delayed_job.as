@@ -5,7 +5,7 @@ funcdef void TIMED_SIMPLE_CALLBACK();
 class SimpleDelayedJob : ExecutionJobInterface {
     SimpleDelayedJob(){}
 
-    SimpleDelayedJob(float _wait, TIMED_SIMPLE_CALLBACK @_callback) {
+    SimpleDelayedJob(float _wait, TIMED_SIMPLE_CALLBACK @_callback){
         wait = _wait;
         @callback = @_callback;
     }
