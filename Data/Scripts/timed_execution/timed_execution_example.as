@@ -4,6 +4,7 @@
 #include "timed_execution/repeating_delayed_job.as"
 #include "timed_execution/simple_delayed_job.as"
 #include "timed_execution/repeating_dynamic_delayed_job.as"
+#include "timed_execution/selfaware_job_with_name.as"
 
 TimedExecution timer;
 
@@ -35,6 +36,14 @@ void Update(int is_paused){
             Log(info, counter + " Second Delay (Dynamic Repeat)");
             return (counter -= 1.0f);
         }));
+        
+        SelfawareJobWithName job = SelfawareJobWithName(function(_job){
+            // SelfawareJobWithName is just an example, create your own classes
+            // with getters and setters based on timed_execution/selfaware_job.as.
+            Log(info, _job.GetName());
+        });
+        job.SetName("Extended SelfawareJob class");
+        timer.Add(job);
     }
 
     timer.Update();
