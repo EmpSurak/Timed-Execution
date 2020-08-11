@@ -41,4 +41,10 @@ class SelfawareJob : ExecutionJobInterface {
     float GetStarted(){
         return started;
     }
+    
+    void Execute(array<string> _props){}
+    
+    bool IsEvent(string _event){
+        return false;
+    }
 }

@@ -23,11 +23,21 @@ class AfterCharInitJob : ExecutionJobInterface {
     }
     
     bool IsExpired(float time){
+        if(!MovementObjectExists(id)){
+            return false;
+        }
+    
         MovementObject @char = ReadCharacter(id);
         return char.GetIntVar("updated") > 0;
     }
     
     void SetStarted(float time){
         started = time;
+    }
+    
+    void Execute(array<string> _props){}
+    
+    bool IsEvent(string _event){
+        return false;
     }
 }

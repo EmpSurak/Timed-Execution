@@ -37,4 +37,10 @@ class SimpleDelayedJob : ExecutionJobInterface {
     void SetStarted(float time){
         started = time;
     }
+    
+    void Execute(array<string> _props){}
+    
+    bool IsEvent(string _event){
+        return false;
+    }
 }

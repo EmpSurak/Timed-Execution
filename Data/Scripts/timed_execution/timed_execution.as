@@ -5,6 +5,7 @@ funcdef bool TIMED_EXECUTION_DELETE_SPECIFIC(ExecutionJobInterface@);
 class TimedExecution {
     float time;
     array<ExecutionJobInterface@> jobs;
+    array<string> events;
 
     TimedExecution(){}
 
@@ -27,9 +28,36 @@ class TimedExecution {
                 job.Execute();
                 expired_jobs = true;
             }
+            
+            for(uint j = 0; j < events.length(); j++){
+                array<string> parsed_event = ParseEvent(events[j]);
+                if(job.IsEvent(parsed_event[0])){
+                    job.Execute(parsed_event);
+                    expired_jobs = true;
+                }
+            }
         }
         
+        // All events were processed, so we have to clear the stack.
+        events.resize(0);
+        
         return expired_jobs;
+    }
+    
+    array<string> ParseEvent(string _event){
+        array<string> result;
+    
+        TokenIterator token_iter;
+        token_iter.Init();
+        while(true){
+            if(!token_iter.FindNextToken(_event)){
+                break;
+            }
+            string token = token_iter.GetToken(_event);
+            result.insertLast(token);
+        }
+        
+        return result;            
     }
     
     void RemoveExpired(){
@@ -56,6 +84,7 @@ class TimedExecution {
 
     void DeleteAll(){
         jobs.resize(0);
+        events.resize(0);
     }
     
     void DeleteSpecific(TIMED_EXECUTION_DELETE_SPECIFIC @_callback){
@@ -69,5 +98,9 @@ class TimedExecution {
         }
         
         jobs = _jobs;
+    }
+    
+    void AddEvent(string _event){
+        events.insertLast(_event);
     }
 }
