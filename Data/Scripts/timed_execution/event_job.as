@@ -3,6 +3,11 @@
 funcdef bool EVENT_CALLBACK(array<string>);
 
 class EventJob : ExecutionJobInterface {
+    string event;
+    EVENT_CALLBACK @callback;
+    float started;
+    bool repeat;
+    
     EventJob(){}
 
     EventJob(string _event, EVENT_CALLBACK @_callback){
@@ -10,29 +15,24 @@ class EventJob : ExecutionJobInterface {
         @callback = @_callback;
     }
 
-    string event;
-    EVENT_CALLBACK @callback;
-    float started;
-    bool repeat;
-
-    void Execute(){}
+    void ExecuteExpired(){}
     
-    void Execute(array<string> _props){
+    void ExecuteEvent(array<string> _props){
         repeat = callback(_props);
-    }
-    
-    bool IsRepeating(){
-        return repeat;
     }
     
     bool IsExpired(float _time){
         return false;
     }
     
-    bool IsEvent(string _event){
-        return event == _event;
+    bool IsEvent(array<string> _event){
+        return event == _event[0];
     }
     
+    bool IsRepeating(){
+        return repeat;
+    }
+
     void SetStarted(float _time){
         started = _time;
     }

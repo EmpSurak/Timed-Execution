@@ -3,34 +3,34 @@
 funcdef void AFTER_INIT_CALLBACK();
 
 class AfterInitJob : ExecutionJobInterface {
+    AFTER_INIT_CALLBACK @callback;
+    float started;
+
     AfterInitJob(){}
 
     AfterInitJob(AFTER_INIT_CALLBACK @_callback){
         @callback = @_callback;
     }
 
-    AFTER_INIT_CALLBACK @callback;
-    float started;
-    
-    void Execute(){
+    void ExecuteExpired(){
         callback();
     }
     
-    bool IsRepeating(){
-        return false;
-    }
+    void ExecuteEvent(array<string> _props){}
     
     bool IsExpired(float time){
         return true;
     }
     
-    void SetStarted(float time){
-        started = time;
+    bool IsEvent(array<string> _event){
+        return false;
     }
     
-    void Execute(array<string> _props){}
-    
-    bool IsEvent(string _event){
+    bool IsRepeating(){
         return false;
+    }
+
+    void SetStarted(float time){
+        started = time;
     }
 }

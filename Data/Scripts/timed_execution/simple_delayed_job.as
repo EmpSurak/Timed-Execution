@@ -3,6 +3,10 @@
 funcdef void TIMED_SIMPLE_CALLBACK();
 
 class SimpleDelayedJob : ExecutionJobInterface {
+    float wait;
+    TIMED_SIMPLE_CALLBACK @callback;
+    float started;
+
     SimpleDelayedJob(){}
 
     SimpleDelayedJob(float _wait, TIMED_SIMPLE_CALLBACK @_callback){
@@ -10,37 +14,29 @@ class SimpleDelayedJob : ExecutionJobInterface {
         @callback = @_callback;
     }
 
-    float wait;
-    TIMED_SIMPLE_CALLBACK @callback;
-    float started;
-    
-    float GetEndTime(){
-        if(started == 0.0f){
-            DisplayError("Error", "Job was not started");
-            return 0.0f;
-        }
-        return started+wait;
+    void ExecuteExpired(){
+        callback();
     }
     
-    void Execute(){
-        callback();
+    void ExecuteEvent(array<string> _props){}
+
+    bool IsExpired(float time){
+        return time > GetEndTime();
+    }
+    
+    bool IsEvent(array<string> _event){
+        return false;
     }
     
     bool IsRepeating(){
         return false;
     }
     
-    bool IsExpired(float time){
-        return time > GetEndTime();
-    }
-    
     void SetStarted(float time){
         started = time;
     }
-    
-    void Execute(array<string> _props){}
-    
-    bool IsEvent(string _event){
-        return false;
+
+    float GetEndTime(){
+        return started+wait;
     }
 }

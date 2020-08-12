@@ -25,14 +25,14 @@ class TimedExecution {
             ExecutionJobInterface @job = jobs[i];
 
             if(job.IsExpired(time)){
-                job.Execute();
+                job.ExecuteExpired();
                 expired_jobs = true;
             }
             
             for(uint j = 0; j < events.length(); j++){
                 array<string> parsed_event = ParseEvent(events[j]);
-                if(job.IsEvent(parsed_event[0])){
-                    job.Execute(parsed_event);
+                if(job.IsEvent(parsed_event)){
+                    job.ExecuteEvent(parsed_event);
                     expired_jobs = true;
                 }
             }

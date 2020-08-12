@@ -3,6 +3,10 @@
 funcdef void AFTER_CHAR_CALLBACK(int);
 
 class AfterCharInitJob : ExecutionJobInterface {
+    int id;
+    AFTER_CHAR_CALLBACK @callback;
+    float started;
+
     AfterCharInitJob(){}
 
     AfterCharInitJob(int _id, AFTER_CHAR_CALLBACK @_callback){
@@ -10,34 +14,30 @@ class AfterCharInitJob : ExecutionJobInterface {
         @callback = @_callback;
     }
 
-    int id;
-    AFTER_CHAR_CALLBACK @callback;
-    float started;
-    
-    void Execute(){
+    void ExecuteExpired(){
         callback(id);
+    }
+    
+    void ExecuteEvent(array<string> _props){}
+
+    bool IsExpired(float time){
+        if(!MovementObjectExists(id)){
+            return false;
+        }
+    
+        MovementObject @char = ReadCharacterID(id);
+        return char.GetIntVar("updated") > 0;
+    }
+    
+    bool IsEvent(array<string> _event){
+        return false;
     }
     
     bool IsRepeating(){
         return false;
     }
     
-    bool IsExpired(float time){
-        if(!MovementObjectExists(id)){
-            return false;
-        }
-    
-        MovementObject @char = ReadCharacter(id);
-        return char.GetIntVar("updated") > 0;
-    }
-    
     void SetStarted(float time){
         started = time;
-    }
-    
-    void Execute(array<string> _props){}
-    
-    bool IsEvent(string _event){
-        return false;
     }
 }

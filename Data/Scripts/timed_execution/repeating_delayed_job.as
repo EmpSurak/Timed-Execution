@@ -3,6 +3,11 @@
 funcdef bool TIMED_REPEATING_CALLBACK();
 
 class RepeatingDelayedJob : ExecutionJobInterface {
+    float wait;
+    TIMED_REPEATING_CALLBACK @callback;
+    float started;
+    bool repeat;
+    
     RepeatingDelayedJob(){}
 
     RepeatingDelayedJob(float _wait, TIMED_REPEATING_CALLBACK @_callback){
@@ -10,38 +15,29 @@ class RepeatingDelayedJob : ExecutionJobInterface {
         @callback = @_callback;
     }
 
-    float wait;
-    TIMED_REPEATING_CALLBACK @callback;
-    float started;
-    bool repeat;
-    
-    float GetEndTime(){
-        if(started == 0.0f){
-            DisplayError("Error", "Job was not started");
-            return 0.0f;
-        }
-        return started+wait;
-    }
-    
-    void Execute(){
+    void ExecuteExpired(){
         repeat = callback();
     }
     
-    bool IsRepeating(){
-        return repeat;
-    }
+    void ExecuteEvent(array<string> _props){}
     
     bool IsExpired(float time){
         return time > GetEndTime();
     }
     
+    bool IsEvent(array<string> _event){
+        return false;
+    }
+    
+    bool IsRepeating(){
+        return repeat;
+    }
+
     void SetStarted(float time){
         started = time;
     }
-    
-    void Execute(array<string> _props){}
-    
-    bool IsEvent(string _event){
-        return false;
+
+    float GetEndTime(){
+        return started+wait;
     }
 }

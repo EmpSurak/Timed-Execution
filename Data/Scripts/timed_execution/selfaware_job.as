@@ -3,35 +3,33 @@
 funcdef void SELFAWARE_CALLBACK(SelfawareJob@);
 
 class SelfawareJob : ExecutionJobInterface {
+    SELFAWARE_CALLBACK @callback;
+    float started;
+    bool repeating = false;
+    bool expired = true;
+
     SelfawareJob(){}
 
     SelfawareJob(SELFAWARE_CALLBACK @_callback){
         @callback = @_callback;
     }
 
-    SELFAWARE_CALLBACK @callback;
-    float started;
-    bool repeating = false;
-    bool expired = true;
-
-    void Execute(){
+    void ExecuteExpired(){
         callback(this);
     }
     
-    bool IsRepeating(){
-        return repeating;
-    }
-
-    void SetRepeating(bool _repeating){
-        repeating = _repeating;
-    }
+    void ExecuteEvent(array<string> _props){}
     
     bool IsExpired(float time){
         return expired;
     }
     
-    void SetExpired(bool _expired){
-        expired = _expired;
+    bool IsEvent(array<string> _event){
+        return false;
+    }
+    
+    bool IsRepeating(){
+        return repeating;
     }
     
     void SetStarted(float time){
@@ -41,10 +39,12 @@ class SelfawareJob : ExecutionJobInterface {
     float GetStarted(){
         return started;
     }
-    
-    void Execute(array<string> _props){}
-    
-    bool IsEvent(string _event){
-        return false;
+
+    void SetRepeating(bool _repeating){
+        repeating = _repeating;
+    }
+
+    void SetExpired(bool _expired){
+        expired = _expired;
     }
 }
