@@ -1,6 +1,6 @@
 interface ExecutionJobInterface{
-    void ExecuteExpired();
-    void ExecuteEvent(array<string> _props);
+    void ExecuteExpired(); // Executed when IsExpired is true
+    void ExecuteEvent(array<string> _props); // Executed when IsEvent is true
     bool IsExpired(float _time);
     bool IsEvent(array<string> _event);
     bool IsRepeating();

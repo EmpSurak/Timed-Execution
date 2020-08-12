@@ -59,6 +59,7 @@ void Init(string str){
     // timed_execution/event_job.as
     timer.Add(EventJob("knocked_over", function(_params){
         Log(info, "Event: " + _params[0]);
+        // Return true to restart the job.
         return false;
     }));
 }
