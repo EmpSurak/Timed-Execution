@@ -2,7 +2,7 @@
 #include "timed_execution/timer_job_interface.as"
 #include "timed_execution/event_job_interface.as"
 
-class TimedExecution{
+class TimedExecution {
     protected float current_time;
     protected array<BasicJobInterface@> basic_jobs;
     protected array<TimerJobInterface@> timer_jobs;
