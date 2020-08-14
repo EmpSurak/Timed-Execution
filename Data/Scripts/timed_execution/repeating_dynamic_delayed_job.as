@@ -1,12 +1,12 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/timer_job_interface.as"
 
 funcdef float TIMED_REPEATING_DYNAMIC_CALLBACK();
 
-class RepeatingDynamicDelayedJob : ExecutionJobInterface {
+class RepeatingDynamicDelayedJob : TimerJobInterface {
     float wait;
     TIMED_REPEATING_DYNAMIC_CALLBACK @callback;
     float started;
-    
+
     RepeatingDynamicDelayedJob(){}
 
     RepeatingDynamicDelayedJob(float _wait, TIMED_REPEATING_DYNAMIC_CALLBACK @_callback){
@@ -17,17 +17,11 @@ class RepeatingDynamicDelayedJob : ExecutionJobInterface {
     void ExecuteExpired(){
         wait = callback();
     }
-    
-    void ExecuteEvent(array<string> _props){}
-    
+
     bool IsExpired(float time){
         return time > GetEndTime();
     }
-    
-    bool IsEvent(array<string> _event){
-        return false;
-    }
-    
+
     bool IsRepeating(){
         return wait > 0.0f;
     }

@@ -1,13 +1,13 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/timer_job_interface.as"
 
 funcdef bool TIMED_REPEATING_CALLBACK();
 
-class RepeatingDelayedJob : ExecutionJobInterface {
+class RepeatingDelayedJob : TimerJobInterface {
     float wait;
     TIMED_REPEATING_CALLBACK @callback;
     float started;
     bool repeat;
-    
+
     RepeatingDelayedJob(){}
 
     RepeatingDelayedJob(float _wait, TIMED_REPEATING_CALLBACK @_callback){
@@ -18,17 +18,11 @@ class RepeatingDelayedJob : ExecutionJobInterface {
     void ExecuteExpired(){
         repeat = callback();
     }
-    
-    void ExecuteEvent(array<string> _props){}
-    
+
     bool IsExpired(float time){
         return time > GetEndTime();
     }
-    
-    bool IsEvent(array<string> _event){
-        return false;
-    }
-    
+
     bool IsRepeating(){
         return repeat;
     }

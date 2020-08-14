@@ -1,8 +1,8 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/basic_job_interface.as"
 
 funcdef void SELFAWARE_CALLBACK(SelfawareJob@);
 
-class SelfawareJob : ExecutionJobInterface {
+class SelfawareJob : BasicJobInterface {
     SELFAWARE_CALLBACK @callback;
     float started;
     bool repeating = false;
@@ -17,27 +17,13 @@ class SelfawareJob : ExecutionJobInterface {
     void ExecuteExpired(){
         callback(this);
     }
-    
-    void ExecuteEvent(array<string> _props){}
-    
-    bool IsExpired(float time){
+
+    bool IsExpired(){
         return expired;
     }
-    
-    bool IsEvent(array<string> _event){
-        return false;
-    }
-    
+
     bool IsRepeating(){
         return repeating;
-    }
-    
-    void SetStarted(float time){
-        started = time;
-    }
-    
-    float GetStarted(){
-        return started;
     }
 
     void SetRepeating(bool _repeating){

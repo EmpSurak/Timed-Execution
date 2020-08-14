@@ -1,13 +1,12 @@
-#include "timed_execution/event_job.as"
+#include "timed_execution/event_job_interface.as"
 
 funcdef bool LEVEL_EVENT_CALLBACK(array<string>);
 
-class LevelEventJob : ExecutionJobInterface {
+class LevelEventJob : EventJobInterface {
     string event;
     LEVEL_EVENT_CALLBACK @callback;
-    float started;
     bool repeat;
-    
+
     LevelEventJob(){}
 
     LevelEventJob(string _event, LEVEL_EVENT_CALLBACK @_callback){
@@ -15,29 +14,19 @@ class LevelEventJob : ExecutionJobInterface {
         @callback = @_callback;
     }
 
-    void ExecuteExpired(){}
-    
     void ExecuteEvent(array<string> _props){
         _props.removeAt(0);
         repeat = callback(_props);
     }
-    
-    bool IsExpired(float _time){
-        return false;
-    }
-    
+
     bool IsEvent(array<string> _event){
         if (_event[0] != "level_event")
             return false;
     
         return event == _event[1];
     }
-    
+
     bool IsRepeating(){
         return repeat;
-    }
-
-    void SetStarted(float _time){
-        started = _time;
     }
 }

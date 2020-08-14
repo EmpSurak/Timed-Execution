@@ -1,52 +1,26 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/basic_job_interface.as"
+#include "timed_execution/timer_job_interface.as"
+#include "timed_execution/event_job_interface.as"
 
-funcdef bool TIMED_EXECUTION_DELETE_SPECIFIC(ExecutionJobInterface@);
-
-class TimedExecution {
+class TimedExecution{
     float time;
-    array<ExecutionJobInterface@> jobs;
+    array<BasicJobInterface@> basic_jobs;
+    array<TimerJobInterface@> timer_jobs;
+    array<EventJobInterface@> event_jobs;
     array<string> events;
 
     TimedExecution(){}
 
     void Update(){
         time += time_step;
-        bool expired_jobs = ExecuteExpired();
-        
-        if(expired_jobs){
-            RemoveExpired();
-        }
+        ProcessBasicJobs();
+        ProcessTimerJobs();
+        ProcessEventJobs();
     }
-    
-    bool ExecuteExpired(){
-        bool expired_jobs = false;
-    
-        for(uint i = 0; i < jobs.length(); i++){
-            ExecutionJobInterface @job = jobs[i];
 
-            if(job.IsExpired(time)){
-                job.ExecuteExpired();
-                expired_jobs = true;
-            }
-            
-            for(uint j = 0; j < events.length(); j++){
-                array<string> parsed_event = ParseEvent(events[j]);
-                if(job.IsEvent(parsed_event)){
-                    job.ExecuteEvent(parsed_event);
-                    expired_jobs = true;
-                }
-            }
-        }
-        
-        // All events were processed, so we have to clear the stack.
-        events.resize(0);
-        
-        return expired_jobs;
-    }
-    
     array<string> ParseEvent(string _event){
         array<string> result;
-    
+
         TokenIterator token_iter;
         token_iter.Init();
         while(true){
@@ -56,54 +30,103 @@ class TimedExecution {
             string token = token_iter.GetToken(_event);
             result.insertLast(token);
         }
-        
+
         return result;            
     }
-    
-    void RemoveExpired(){
-        array<ExecutionJobInterface@> _jobs;
-        
-        for(uint i = 0; i < jobs.length(); i++){
-            ExecutionJobInterface @job = jobs[i];
 
-            if(!job.IsExpired(time)){
-                _jobs.insertLast(job);
-            }else if(job.IsRepeating()){
-                job.SetStarted(time);
+    void ProcessBasicJobs(){
+        array<BasicJobInterface@> _jobs;
+        for(uint i = 0; i < basic_jobs.length(); i++){
+            BasicJobInterface @job = basic_jobs[i];
+            if(job.IsExpired()){
+                job.ExecuteExpired();
+                if(job.IsRepeating()){
+                    _jobs.insertLast(job);
+                }
+            }else{
                 _jobs.insertLast(job);
             }
         }
-        
-        jobs = _jobs;
+        if(basic_jobs.length() != _jobs.length()){
+            basic_jobs = _jobs;
+        }
     }
-    
-    void Add(ExecutionJobInterface &job){
+
+    void ProcessTimerJobs(){
+        array<TimerJobInterface@> _jobs;
+        for(uint i = 0; i < timer_jobs.length(); i++){
+            TimerJobInterface @job = timer_jobs[i];
+
+            if(job.IsExpired(time)){
+                job.ExecuteExpired();
+
+                if(job.IsRepeating()){
+                    job.SetStarted(time);
+                    _jobs.insertLast(job);
+                }
+            }else{
+                _jobs.insertLast(job);
+            }
+        }
+
+        if(timer_jobs.length() != _jobs.length()){
+            timer_jobs = _jobs;
+        }
+    }
+
+    void ProcessEventJobs(){
+        array<EventJobInterface@> _jobs;
+        for(uint j = 0; j < event_jobs.length(); j++){
+            EventJobInterface @job = event_jobs[j];
+            bool has_event = false;
+
+            for(uint i = 0; i < events.length(); i++){
+                array<string> parsed_event = ParseEvent(events[i]);
+
+                if(job.IsEvent(parsed_event)){
+                    job.ExecuteEvent(parsed_event);
+                    has_event = true;
+                }
+            }
+
+            if(has_event){
+                if(job.IsRepeating()){
+                    _jobs.insertLast(job);
+                }
+            }else{
+                _jobs.insertLast(job);
+            }
+        }
+        if(event_jobs.length() != _jobs.length()){
+            event_jobs = _jobs;
+        }
+        events.resize(0);
+    }
+
+    void Add(BasicJobInterface &job){
+        basic_jobs.insertLast(job);
+    }
+
+    void Add(TimerJobInterface &job){
         job.SetStarted(time);
-        jobs.insertLast(job);
+        timer_jobs.insertLast(job);
+    }
+
+    void Add(EventJobInterface &job){
+        event_jobs.insertLast(job);
     }
 
     void DeleteAll(){
-        jobs.resize(0);
+        basic_jobs.resize(0);
+        timer_jobs.resize(0);
+        event_jobs.resize(0);
         events.resize(0);
     }
-    
-    void DeleteSpecific(TIMED_EXECUTION_DELETE_SPECIFIC @_callback){
-        array<ExecutionJobInterface@> _jobs;
-        
-        for(uint i = 0; i < jobs.length(); i++){
-            ExecutionJobInterface @job = jobs[i];
-            if(!_callback(job)){
-                _jobs.insertLast(job);
-            }
-        }
-        
-        jobs = _jobs;
-    }
-    
+
     void AddEvent(string _event){
         events.insertLast(_event);
     }
-    
+
     void AddLevelEvent(string _event){
         AddEvent("level_event " + _event);
     }

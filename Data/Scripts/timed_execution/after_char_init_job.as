@@ -1,11 +1,10 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/basic_job_interface.as"
 
 funcdef void AFTER_CHAR_CALLBACK(int);
 
-class AfterCharInitJob : ExecutionJobInterface {
+class AfterCharInitJob : BasicJobInterface {
     int id;
     AFTER_CHAR_CALLBACK @callback;
-    float started;
 
     AfterCharInitJob(){}
 
@@ -17,10 +16,8 @@ class AfterCharInitJob : ExecutionJobInterface {
     void ExecuteExpired(){
         callback(id);
     }
-    
-    void ExecuteEvent(array<string> _props){}
 
-    bool IsExpired(float time){
+    bool IsExpired(){
         if(!MovementObjectExists(id)){
             return false;
         }
@@ -28,16 +25,8 @@ class AfterCharInitJob : ExecutionJobInterface {
         MovementObject @char = ReadCharacterID(id);
         return char.GetIntVar("updated") > 0;
     }
-    
-    bool IsEvent(array<string> _event){
-        return false;
-    }
-    
+
     bool IsRepeating(){
         return false;
-    }
-    
-    void SetStarted(float time){
-        started = time;
     }
 }

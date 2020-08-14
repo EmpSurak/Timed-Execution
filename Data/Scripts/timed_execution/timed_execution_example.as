@@ -5,6 +5,7 @@
 #include "timed_execution/repeating_delayed_job.as"
 #include "timed_execution/repeating_dynamic_delayed_job.as"
 #include "timed_execution/selfaware_job_with_name.as"
+#include "timed_execution/event_job.as"
 #include "timed_execution/level_event_job.as"
 
 TimedExecution timer;
@@ -19,7 +20,7 @@ void Init(string str){
     timer.Add(AfterCharInitJob(1, function(id){
         Log(info, "Execute once after character " + id + " initialization is finished");
     }));
-    
+
     // timed_execution/simple_delayed_job.as
     timer.Add(SimpleDelayedJob(1.0f, function(){
         Log(info, "Execute once after one second");
@@ -47,6 +48,13 @@ void Init(string str){
     });
     job.SetName("Extended SelfawareJob class");
     timer.Add(job);
+
+    // timed_execution/event_job.as
+    timer.Add(EventJob(function(_params){
+        Log(info, "Any Event");
+        // Return true to restart the job.
+        return false;
+    }));
 
     // timed_execution/level_event_job.as
     timer.Add(LevelEventJob("knocked_over", function(_params){

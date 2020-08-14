@@ -1,10 +1,9 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/basic_job_interface.as"
 
 funcdef void AFTER_INIT_CALLBACK();
 
-class AfterInitJob : ExecutionJobInterface {
+class AfterInitJob : BasicJobInterface {
     AFTER_INIT_CALLBACK @callback;
-    float started;
 
     AfterInitJob(){}
 
@@ -15,22 +14,12 @@ class AfterInitJob : ExecutionJobInterface {
     void ExecuteExpired(){
         callback();
     }
-    
-    void ExecuteEvent(array<string> _props){}
-    
-    bool IsExpired(float time){
+
+    bool IsExpired(){
         return true;
     }
-    
-    bool IsEvent(array<string> _event){
-        return false;
-    }
-    
+
     bool IsRepeating(){
         return false;
-    }
-
-    void SetStarted(float time){
-        started = time;
     }
 }
