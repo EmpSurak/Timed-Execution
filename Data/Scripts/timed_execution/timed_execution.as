@@ -38,8 +38,10 @@ class TimedExecution{
         array<BasicJobInterface@> _jobs;
         for(uint i = 0; i < basic_jobs.length(); i++){
             BasicJobInterface @job = basic_jobs[i];
+
             if(job.IsExpired()){
                 job.ExecuteExpired();
+
                 if(job.IsRepeating()){
                     _jobs.insertLast(job);
                 }
@@ -47,6 +49,7 @@ class TimedExecution{
                 _jobs.insertLast(job);
             }
         }
+
         if(basic_jobs.length() != _jobs.length()){
             basic_jobs = _jobs;
         }
