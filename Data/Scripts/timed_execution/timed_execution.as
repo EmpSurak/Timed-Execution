@@ -3,22 +3,22 @@
 #include "timed_execution/event_job_interface.as"
 
 class TimedExecution{
-    float time;
-    array<BasicJobInterface@> basic_jobs;
-    array<TimerJobInterface@> timer_jobs;
-    array<EventJobInterface@> event_jobs;
-    array<string> events;
+    protected float current_time;
+    protected array<BasicJobInterface@> basic_jobs;
+    protected array<TimerJobInterface@> timer_jobs;
+    protected array<EventJobInterface@> event_jobs;
+    protected array<string> events;
 
     TimedExecution(){}
 
     void Update(){
-        time += time_step;
+        current_time += time_step;
         ProcessBasicJobs();
         ProcessTimerJobs();
         ProcessEventJobs();
     }
 
-    array<string> ParseEvent(string _event){
+    private array<string> ParseEvent(string _event){
         array<string> result;
 
         TokenIterator token_iter;
@@ -34,7 +34,7 @@ class TimedExecution{
         return result;            
     }
 
-    void ProcessBasicJobs(){
+    private void ProcessBasicJobs(){
         array<BasicJobInterface@> _jobs;
         for(uint i = 0; i < basic_jobs.length(); i++){
             BasicJobInterface @job = basic_jobs[i];
@@ -52,16 +52,16 @@ class TimedExecution{
         }
     }
 
-    void ProcessTimerJobs(){
+    private void ProcessTimerJobs(){
         array<TimerJobInterface@> _jobs;
         for(uint i = 0; i < timer_jobs.length(); i++){
             TimerJobInterface @job = timer_jobs[i];
 
-            if(job.IsExpired(time)){
+            if(job.IsExpired(current_time)){
                 job.ExecuteExpired();
 
                 if(job.IsRepeating()){
-                    job.SetStarted(time);
+                    job.SetStarted(current_time);
                     _jobs.insertLast(job);
                 }
             }else{
@@ -74,7 +74,7 @@ class TimedExecution{
         }
     }
 
-    void ProcessEventJobs(){
+    private void ProcessEventJobs(){
         array<EventJobInterface@> _jobs;
         for(uint j = 0; j < event_jobs.length(); j++){
             EventJobInterface @job = event_jobs[j];
@@ -108,7 +108,7 @@ class TimedExecution{
     }
 
     void Add(TimerJobInterface &job){
-        job.SetStarted(time);
+        job.SetStarted(current_time);
         timer_jobs.insertLast(job);
     }
 

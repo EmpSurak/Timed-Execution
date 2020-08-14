@@ -3,8 +3,8 @@
 funcdef void SELFAWARE_NAME_CALLBACK(SelfawareJobWithName@);
 
 class SelfawareJobWithName : SelfawareJob {
-    SELFAWARE_NAME_CALLBACK @new_callback;
-    string name;
+    protected SELFAWARE_NAME_CALLBACK @new_callback;
+    protected string name;
 
     SelfawareJobWithName(){}
 

@@ -3,9 +3,9 @@
 funcdef float TIMED_REPEATING_DYNAMIC_CALLBACK();
 
 class RepeatingDynamicDelayedJob : TimerJobInterface {
-    float wait;
-    TIMED_REPEATING_DYNAMIC_CALLBACK @callback;
-    float started;
+    protected float wait;
+    protected TIMED_REPEATING_DYNAMIC_CALLBACK @callback;
+    protected float started;
 
     RepeatingDynamicDelayedJob(){}
 
@@ -30,7 +30,7 @@ class RepeatingDynamicDelayedJob : TimerJobInterface {
         started = time;
     }
 
-    float GetEndTime(){
+    private float GetEndTime(){
         return started+wait;
     }
 }

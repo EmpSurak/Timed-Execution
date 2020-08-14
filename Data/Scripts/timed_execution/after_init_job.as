@@ -3,7 +3,7 @@
 funcdef void AFTER_INIT_CALLBACK();
 
 class AfterInitJob : BasicJobInterface {
-    AFTER_INIT_CALLBACK @callback;
+    protected AFTER_INIT_CALLBACK @callback;
 
     AfterInitJob(){}
 

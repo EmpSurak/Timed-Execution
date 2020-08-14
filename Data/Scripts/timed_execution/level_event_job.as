@@ -3,9 +3,9 @@
 funcdef bool LEVEL_EVENT_CALLBACK(array<string>);
 
 class LevelEventJob : EventJobInterface {
-    string event;
-    LEVEL_EVENT_CALLBACK @callback;
-    bool repeat;
+    protected string event;
+    protected LEVEL_EVENT_CALLBACK @callback;
+    protected bool repeat;
 
     LevelEventJob(){}
 

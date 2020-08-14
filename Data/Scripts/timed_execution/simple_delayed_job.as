@@ -3,9 +3,9 @@
 funcdef void TIMED_SIMPLE_CALLBACK();
 
 class SimpleDelayedJob : TimerJobInterface {
-    float wait;
-    TIMED_SIMPLE_CALLBACK @callback;
-    float started;
+    protected float wait;
+    protected TIMED_SIMPLE_CALLBACK @callback;
+    protected float started;
 
     SimpleDelayedJob(){}
 
@@ -30,7 +30,7 @@ class SimpleDelayedJob : TimerJobInterface {
         started = time;
     }
 
-    float GetEndTime(){
+    private float GetEndTime(){
         return started+wait;
     }
 }

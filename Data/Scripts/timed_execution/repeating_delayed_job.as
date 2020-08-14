@@ -3,10 +3,10 @@
 funcdef bool TIMED_REPEATING_CALLBACK();
 
 class RepeatingDelayedJob : TimerJobInterface {
-    float wait;
-    TIMED_REPEATING_CALLBACK @callback;
-    float started;
-    bool repeat;
+    protected float wait;
+    protected TIMED_REPEATING_CALLBACK @callback;
+    protected float started;
+    protected bool repeat;
 
     RepeatingDelayedJob(){}
 

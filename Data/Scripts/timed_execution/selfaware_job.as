@@ -3,10 +3,10 @@
 funcdef void SELFAWARE_CALLBACK(SelfawareJob@);
 
 class SelfawareJob : BasicJobInterface {
-    SELFAWARE_CALLBACK @callback;
-    float started;
-    bool repeating = false;
-    bool expired = true;
+    protected SELFAWARE_CALLBACK @callback;
+    protected float started;
+    protected bool repeating = false;
+    protected bool expired = true;
 
     SelfawareJob(){}
 

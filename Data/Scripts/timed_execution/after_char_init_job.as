@@ -3,8 +3,8 @@
 funcdef void AFTER_CHAR_CALLBACK(int);
 
 class AfterCharInitJob : BasicJobInterface {
-    int id;
-    AFTER_CHAR_CALLBACK @callback;
+    protected int id;
+    protected AFTER_CHAR_CALLBACK @callback;
 
     AfterCharInitJob(){}
 

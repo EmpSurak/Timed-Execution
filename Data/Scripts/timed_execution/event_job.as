@@ -3,16 +3,14 @@
 funcdef bool EVENT_CALLBACK(array<string>);
 
 class EventJob : EventJobInterface {
-    EVENT_CALLBACK @callback;
-    bool repeat;
+    protected EVENT_CALLBACK @callback;
+    protected bool repeat;
 
     EventJob(){}
 
     EventJob(EVENT_CALLBACK @_callback){
         @callback = @_callback;
     }
-
-    void ExecuteExpired(){}
 
     void ExecuteEvent(array<string> _props){
         repeat = callback(_props);
