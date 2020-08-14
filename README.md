@@ -36,8 +36,8 @@ void Init(string str){
     if(MovementObjectExists(char_id)){
         MovementObject @_char = ReadCharacterID(char_id);
         timer.Add(CharStateChangeJob(_char, function(_char, _previous_state, _new_state){
-            Log(info, "Execute once after character " + _char.GetID() + " state changed");
-            Log(info, "Previous state: " + _previous_state + "\t" + "New state: " + _new_state);
+            Log(info, "Execute after character " + _char.GetID() + " state changed");
+            Log(info, "Previous state: " + _previous_state + "\tNew state: " + _new_state);
             // Return true to restart the job.
             return true;
         }));
