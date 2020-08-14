@@ -86,6 +86,10 @@ class TimedExecution{
                 if(job.IsEvent(parsed_event)){
                     job.ExecuteEvent(parsed_event);
                     has_event = true;
+
+                    if(!job.IsRepeating()){
+                        break;
+                    }
                 }
             }
 
@@ -97,9 +101,11 @@ class TimedExecution{
                 _jobs.insertLast(job);
             }
         }
+
         if(event_jobs.length() != _jobs.length()){
             event_jobs = _jobs;
         }
+
         events.resize(0);
     }
 
