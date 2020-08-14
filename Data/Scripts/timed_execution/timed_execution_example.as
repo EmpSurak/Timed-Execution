@@ -5,7 +5,7 @@
 #include "timed_execution/repeating_delayed_job.as"
 #include "timed_execution/repeating_dynamic_delayed_job.as"
 #include "timed_execution/selfaware_job_with_name.as"
-#include "timed_execution/event_job.as"
+#include "timed_execution/level_event_job.as"
 
 TimedExecution timer;
 
@@ -48,9 +48,9 @@ void Init(string str){
     job.SetName("Extended SelfawareJob class");
     timer.Add(job);
 
-    // timed_execution/event_job.as
-    timer.Add(EventJob("knocked_over", function(_params){
-        Log(info, "Event: " + _params[0]);
+    // timed_execution/level_event_job.as
+    timer.Add(LevelEventJob("knocked_over", function(_params){
+        Log(info, "Level Event: " + _params[0]);
         // Return true to restart the job.
         return false;
     }));
@@ -61,7 +61,7 @@ void Update(int is_paused){
 }
 
 void ReceiveMessage(string msg){
-    timer.AddEvent(msg);
+    timer.AddLevelEvent(msg);
 }
 
 void DrawGUI(){}

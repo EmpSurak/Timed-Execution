@@ -9,11 +9,11 @@
     <PreviewImage>Data/Images/timed_execution/thumb.jpg</PreviewImage>
 
     <Description>A small library to execute code with delay.</Description>
-    <Version>0.8.1</Version>
+    <Version>0.9.0</Version>
     <Author>Surak</Author>
-	<Tag>library</Tag>
-	<Tag>scripting</Tag>
+    <Tag>library</Tag>
+    <Tag>scripting</Tag>
 
-	<SupportedVersion>*</SupportedVersion>
+    <SupportedVersion>*</SupportedVersion>
     <NeedsRestart>false</NeedsRestart>
 </Mod>

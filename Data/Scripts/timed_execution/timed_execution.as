@@ -103,4 +103,8 @@ class TimedExecution {
     void AddEvent(string _event){
         events.insertLast(_event);
     }
+    
+    void AddLevelEvent(string _event){
+        AddEvent("level_event " + _event);
+    }
 }

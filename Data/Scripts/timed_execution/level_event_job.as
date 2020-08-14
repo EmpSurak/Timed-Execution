@@ -1,17 +1,16 @@
-#include "timed_execution/execution_job_interface.as"
+#include "timed_execution/event_job.as"
 
-funcdef bool EVENT_CALLBACK(array<string>);
+funcdef bool LEVEL_EVENT_CALLBACK(array<string>);
 
-// DEPRECATED
-class EventJob : ExecutionJobInterface {
+class LevelEventJob : ExecutionJobInterface {
     string event;
-    EVENT_CALLBACK @callback;
+    LEVEL_EVENT_CALLBACK @callback;
     float started;
     bool repeat;
     
-    EventJob(){}
+    LevelEventJob(){}
 
-    EventJob(string _event, EVENT_CALLBACK @_callback){
+    LevelEventJob(string _event, LEVEL_EVENT_CALLBACK @_callback){
         event = _event;
         @callback = @_callback;
     }
@@ -19,6 +18,7 @@ class EventJob : ExecutionJobInterface {
     void ExecuteExpired(){}
     
     void ExecuteEvent(array<string> _props){
+        _props.removeAt(0);
         repeat = callback(_props);
     }
     
@@ -27,7 +27,10 @@ class EventJob : ExecutionJobInterface {
     }
     
     bool IsEvent(array<string> _event){
-        return event == _event[0];
+        if (_event[0] != "level_event")
+            return false;
+    
+        return event == _event[1];
     }
     
     bool IsRepeating(){
