@@ -31,7 +31,7 @@ class RepeatingDelayedJob : TimerJobInterface {
         started = time;
     }
 
-    float GetEndTime(){
+    private float GetEndTime(){
         return started+wait;
     }
 }

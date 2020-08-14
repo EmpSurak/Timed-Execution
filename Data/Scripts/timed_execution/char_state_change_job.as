@@ -32,6 +32,7 @@ class CharStateChangeJob : BasicJobInterface {
         if(repeat){
             initial_state = char.GetIntVar("state");
         }
+
         return repeat;
     }
 }
