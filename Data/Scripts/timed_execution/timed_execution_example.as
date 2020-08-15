@@ -2,7 +2,7 @@
 #include "timed_execution/after_init_job.as"
 #include "timed_execution/after_char_init_job.as"
 #include "timed_execution/char_state_change_job.as"
-#include "timed_execution/simple_delayed_job.as"
+#include "timed_execution/delayed_job.as"
 #include "timed_execution/repeating_delayed_job.as"
 #include "timed_execution/repeating_dynamic_delayed_job.as"
 #include "timed_execution/selfaware_job_with_name.as"
@@ -35,8 +35,8 @@ void Init(string str){
         }));
     }
 
-    // timed_execution/simple_delayed_job.as
-    timer.Add(SimpleDelayedJob(1.0f, function(){
+    // timed_execution/delayed_job.as
+    timer.Add(DelayedJob(1.0f, function(){
         Log(info, "Execute once after one second");
     }));
 
