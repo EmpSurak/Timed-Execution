@@ -10,6 +10,7 @@ A small library to execute code with delay for [Overgrowth](https://www.wolfire.
 #include "timed_execution/after_init_job.as"
 #include "timed_execution/after_char_init_job.as"
 #include "timed_execution/char_state_change_job.as"
+#include "timed_execution/char_damage_job.as"
 #include "timed_execution/delayed_job.as"
 #include "timed_execution/repeating_delayed_job.as"
 #include "timed_execution/repeating_dynamic_delayed_job.as"
@@ -35,11 +36,18 @@ void Init(string str){
     // timed_execution/char_state_change_job.as
     if(MovementObjectExists(char_id)){
         MovementObject @_char = ReadCharacterID(char_id);
-        timer.Add(CharStateChangeJob(_char, function(_char, _previous_state, _new_state){
+        timer.Add(CharStateChangeJob(_char, function(_char, _p_state){
             Log(info, "Execute after character " + _char.GetID() + " state changed");
-            Log(info, "Previous state: " + _previous_state + "\tNew state: " + _new_state);
+            Log(info, "Previous state: " + _p_state + "\tNew state: " + _char.GetIntVar("state"));
             // Return true to restart the job.
-            return true;
+            return false;
+        }));
+        
+        timer.Add(CharDamageJob(_char, function(_char, _p_blood, _p_permanent){
+            Log(info, "Execute after character " + _char.GetID() + " health changed");
+            Log(info, "Previous blood: " + _p_blood + "\tPrevious permanent: " + _p_permanent);
+            // Return true to restart the job.
+            return false;
         }));
     }
 

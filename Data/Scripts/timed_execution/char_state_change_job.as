@@ -1,6 +1,6 @@
 #include "timed_execution/basic_job_interface.as"
 
-funcdef bool CHAR_STATE_CHANGE_CALLBACK(MovementObject@, int, int);
+funcdef bool CHAR_STATE_CHANGE_CALLBACK(MovementObject@, int);
 
 class CharStateChangeJob : BasicJobInterface {
     protected MovementObject @char;
@@ -12,12 +12,12 @@ class CharStateChangeJob : BasicJobInterface {
 
     CharStateChangeJob(MovementObject @_char, CHAR_STATE_CHANGE_CALLBACK @_callback){
         @char = @_char;
-        initial_state = _char.GetIntVar("state");
         @callback = @_callback;
+        SetInitialValues(_char);
     }
 
     void ExecuteExpired(){
-        repeat = callback(char, initial_state, char.GetIntVar("state"));
+        repeat = callback(char, initial_state);
     }
 
     bool IsExpired(){
@@ -30,9 +30,13 @@ class CharStateChangeJob : BasicJobInterface {
 
     bool IsRepeating(){
         if(repeat){
-            initial_state = char.GetIntVar("state");
+            SetInitialValues(char);
         }
 
         return repeat;
+    }
+    
+    private void SetInitialValues(MovementObject @_char){
+        initial_state = _char.GetIntVar("state");
     }
 }
