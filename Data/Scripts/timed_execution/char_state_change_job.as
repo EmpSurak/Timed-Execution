@@ -3,24 +3,36 @@
 funcdef bool CHAR_STATE_CHANGE_CALLBACK(MovementObject@, int);
 
 class CharStateChangeJob : BasicJobInterface {
-    protected MovementObject @char;
+    protected int id;
     protected int initial_state;
     protected CHAR_STATE_CHANGE_CALLBACK @callback;
     protected bool repeat;
 
     CharStateChangeJob(){}
 
-    CharStateChangeJob(MovementObject @_char, CHAR_STATE_CHANGE_CALLBACK @_callback){
-        @char = @_char;
+    CharStateChangeJob(int _id, CHAR_STATE_CHANGE_CALLBACK @_callback){
+        id = _id;
         @callback = @_callback;
-        SetInitialValues(_char);
+        
+        MovementObject @char = ReadCharacterID(id);
+        SetInitialValues(char);
     }
 
     void ExecuteExpired(){
+        if(!MovementObjectExists(id)){
+            return;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         repeat = callback(char, initial_state);
     }
 
     bool IsExpired(){
+        if(!MovementObjectExists(id)){
+            return true;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         if(initial_state != char.GetIntVar("state")){
             return true;
         }
@@ -29,6 +41,11 @@ class CharStateChangeJob : BasicJobInterface {
     }
 
     bool IsRepeating(){
+        if(!MovementObjectExists(id)){
+            return false;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         if(repeat){
             SetInitialValues(char);
         }

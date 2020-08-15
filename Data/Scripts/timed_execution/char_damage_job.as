@@ -3,7 +3,7 @@
 funcdef bool CHAR_DAMAGE_CALLBACK(MovementObject@, float, float);
 
 class CharDamageJob : BasicJobInterface {
-    protected MovementObject @char;
+    protected int id;
     protected float initial_blood_health;
     protected float initial_permanent_health;
     protected CHAR_DAMAGE_CALLBACK @callback;
@@ -11,17 +11,29 @@ class CharDamageJob : BasicJobInterface {
 
     CharDamageJob(){}
 
-    CharDamageJob(MovementObject @_char, CHAR_DAMAGE_CALLBACK @_callback){
-        @char = @_char;
+    CharDamageJob(int _id, CHAR_DAMAGE_CALLBACK @_callback){
+        id = _id;
         @callback = @_callback;
-        SetInitialValues(_char);
+        
+        MovementObject @char = ReadCharacterID(id);
+        SetInitialValues(char);
     }
 
     void ExecuteExpired(){
+        if(!MovementObjectExists(id)){
+            return;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         repeat = callback(char, initial_blood_health, initial_permanent_health);
     }
 
     bool IsExpired(){
+        if(!MovementObjectExists(id)){
+            return true;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         if(initial_blood_health != char.GetFloatVar("blood_health")){
             return true;
         }
@@ -33,6 +45,11 @@ class CharDamageJob : BasicJobInterface {
     }
 
     bool IsRepeating(){
+        if(!MovementObjectExists(id)){
+            return false;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
         if(repeat){
             SetInitialValues(char);
         }

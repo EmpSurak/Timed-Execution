@@ -1,6 +1,6 @@
 #include "timed_execution/basic_job_interface.as"
 
-funcdef void AFTER_CHAR_CALLBACK(int);
+funcdef void AFTER_CHAR_CALLBACK(MovementObject@);
 
 class AfterCharInitJob : BasicJobInterface {
     protected int id;
@@ -14,15 +14,20 @@ class AfterCharInitJob : BasicJobInterface {
     }
 
     void ExecuteExpired(){
-        callback(id);
+        if(!MovementObjectExists(id)){
+            return;
+        }
+        MovementObject @char = ReadCharacterID(id);
+
+        callback(char);
     }
 
     bool IsExpired(){
         if(!MovementObjectExists(id)){
             return false;
         }
-    
         MovementObject @char = ReadCharacterID(id);
+
         return char.GetIntVar("updated") > 0;
     }
 
