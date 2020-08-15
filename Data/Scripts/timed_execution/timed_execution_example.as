@@ -13,6 +13,8 @@
 TimedExecution timer;
 
 void Init(string str){
+    int char_id = 5;
+
     // timed_execution/after_init_job.as
     timer.Add(AfterInitJob(function(){
         Log(info, "Execute once after initialization is finished");
@@ -23,7 +25,6 @@ void Init(string str){
         Log(info, "Execute once after character " + id + " initialization is finished");
     }));
 
-    int char_id = 5;
     if(MovementObjectExists(char_id)){
         MovementObject @_char = ReadCharacterID(char_id);
 
