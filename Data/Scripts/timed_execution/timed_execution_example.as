@@ -9,6 +9,7 @@
 #include "timed_execution/selfaware_job_with_name.as"
 #include "timed_execution/event_job.as"
 #include "timed_execution/level_event_job.as"
+#include "timed_execution/on_input_down_job.as"
 
 TimedExecution timer;
 
@@ -80,6 +81,13 @@ void Init(string str){
     // timed_execution/level_event_job.as
     timer.Add(LevelEventJob("knocked_over", function(_params){
         Log(info, "Level Event: " + _params[0]);
+        // Return true to restart the job.
+        return false;
+    }));
+
+    // timed_execution/on_input_down_job.as
+    timer.Add(OnInputDownJob(0, "attack", function(){
+        Log(info, "Attack key pressed");
         // Return true to restart the job.
         return false;
     }));
