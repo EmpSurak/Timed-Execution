@@ -10,6 +10,7 @@
 #include "timed_execution/event_job.as"
 #include "timed_execution/level_event_job.as"
 #include "timed_execution/on_input_down_job.as"
+#include "timed_execution/on_input_pressed_job.as"
 
 TimedExecution timer;
 
@@ -90,6 +91,13 @@ void Init(string str){
         Log(info, "Attack key pressed");
         // Return true to restart the job.
         return false;
+    }));
+
+    // timed_execution/on_input_pressed_job.as
+    timer.Add(OnInputPressedJob(0, "k", function(){
+        Log(info, "K key pressed");
+        // Return true to restart the job.
+        return true;
     }));
 }
 
