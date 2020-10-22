@@ -76,10 +76,11 @@ class TimedExecution {
     }
 
     private void ProcessEventJobs(const string _msg){
+        array<string> parsed_event = ParseEvent(_msg);
+
         array<EventJobInterface@> _jobs;
         for(uint j = 0; j < event_jobs.length(); j++){
             EventJobInterface @job = event_jobs[j];
-            array<string> parsed_event = ParseEvent(_msg);
 
             if(job.IsEvent(parsed_event)){
                 job.ExecuteEvent(parsed_event);
