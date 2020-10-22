@@ -79,26 +79,16 @@ class TimedExecution {
         array<EventJobInterface@> _jobs;
         for(uint j = 0; j < event_jobs.length(); j++){
             EventJobInterface @job = event_jobs[j];
-            bool has_event = false;
-
             array<string> parsed_event = ParseEvent(_msg);
 
             if(job.IsEvent(parsed_event)){
                 job.ExecuteEvent(parsed_event);
-                has_event = true;
 
                 if(!job.IsRepeating()){
-                    break;
+                    continue;
                 }
             }
-
-            if(has_event){
-                if(job.IsRepeating()){
-                    _jobs.insertLast(job);
-                }
-            }else{
-                _jobs.insertLast(job);
-            }
+            _jobs.insertLast(job);
         }
 
         if(event_jobs.length() != _jobs.length()){
