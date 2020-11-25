@@ -109,6 +109,14 @@ void ReceiveMessage(string msg){
     timer.AddLevelEvent(msg);
 }
 
+void PreScriptReload(){
+    timer.DeleteAll();
+}
+
+void PostScriptReload(){
+    Init("");
+}
+
 void DrawGUI(){}
 
 void Draw(){}
