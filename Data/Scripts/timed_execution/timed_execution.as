@@ -7,6 +7,7 @@ class TimedExecution {
     protected array<BasicJobInterface@> basic_jobs;
     protected array<TimerJobInterface@> timer_jobs;
     protected array<EventJobInterface@> event_jobs;
+    protected array<string> events;
 
     TimedExecution(){}
 
@@ -14,6 +15,7 @@ class TimedExecution {
         current_time += time_step;
         ProcessBasicJobs();
         ProcessTimerJobs();
+        ProcessEventJobs();
     }
 
     private array<string> ParseEvent(string _event){
@@ -75,26 +77,39 @@ class TimedExecution {
         }
     }
 
-    private void ProcessEventJobs(const string _msg){
-        array<string> parsed_event = ParseEvent(_msg);
-
+    private void ProcessEventJobs(){
         array<EventJobInterface@> _jobs;
         for(uint j = 0; j < event_jobs.length(); j++){
             EventJobInterface @job = event_jobs[j];
+            bool has_event = false;
 
-            if(job.IsEvent(parsed_event)){
-                job.ExecuteEvent(parsed_event);
+            for(uint i = 0; i < events.length(); i++){
+                array<string> parsed_event = ParseEvent(events[i]);
 
-                if(!job.IsRepeating()){
-                    continue;
+                if(job.IsEvent(parsed_event)){
+                    job.ExecuteEvent(parsed_event);
+                    has_event = true;
+
+                    if(!job.IsRepeating()){
+                        break;
+                    }
                 }
             }
-            _jobs.insertLast(job);
+
+            if(has_event){
+                if(job.IsRepeating()){
+                    _jobs.insertLast(job);
+                }
+            }else{
+                _jobs.insertLast(job);
+            }
         }
 
         if(event_jobs.length() != _jobs.length()){
             event_jobs = _jobs;
         }
+
+        events.resize(0);
     }
 
     void Add(BasicJobInterface &job){
@@ -114,10 +129,11 @@ class TimedExecution {
         basic_jobs.resize(0);
         timer_jobs.resize(0);
         event_jobs.resize(0);
+        events.resize(0);
     }
 
     void AddEvent(string _event){
-        ProcessEventJobs(_event);
+        events.insertLast(_event);
     }
 
     void AddLevelEvent(string _event){
