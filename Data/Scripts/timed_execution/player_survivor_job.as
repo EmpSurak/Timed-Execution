@@ -38,6 +38,10 @@ class PlayerSurvivorJob : BasicJobInterface {
 
     bool HasLivingEnemies(){
         MovementObject@ player = GetPlayer();
+        if(player is null){
+            return false;
+        }
+
         int num = GetNumCharacters();
         for(int i = 0; i < num; ++i){
             MovementObject@ char = ReadCharacter(i);
