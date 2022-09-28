@@ -3,33 +3,31 @@
 funcdef bool CHAR_DEATH_CALLBACK(MovementObject@);
 
 class CharDeathJob : BasicJobInterface {
-    protected int id;
+    protected int char_id;
     protected CHAR_DEATH_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     CharDeathJob(){}
 
-    CharDeathJob(int _id, CHAR_DEATH_CALLBACK @_callback){
-        id = _id;
+    CharDeathJob(int _char_id, CHAR_DEATH_CALLBACK @_callback){
+        char_id = _char_id;
         @callback = @_callback;
-        
-        MovementObject @char = ReadCharacterID(id);
     }
 
     void ExecuteExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         repeat = callback(char);
     }
 
     bool IsExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return true;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         return char.GetIntVar("knocked_out") != _awake;
     }

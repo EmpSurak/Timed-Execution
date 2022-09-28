@@ -5,7 +5,7 @@ funcdef bool LEVEL_EVENT_CALLBACK(array<string>);
 class LevelEventJob : EventJobInterface {
     protected string event;
     protected LEVEL_EVENT_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     LevelEventJob(){}
 
@@ -20,9 +20,9 @@ class LevelEventJob : EventJobInterface {
     }
 
     bool IsEvent(array<string> _event){
-        if (_event[0] != "level_event")
+        if (_event[0] != "level_event"){
             return false;
-    
+        }    
         return event == _event[1];
     }
 

@@ -6,7 +6,7 @@ class OnInputPressedJob : BasicJobInterface {
     protected int controller_id;
     protected string input_label;
     protected INPUT_PRESSED_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     OnInputPressedJob(){}
 

@@ -3,35 +3,37 @@
 funcdef bool CHAR_STATE_CHANGE_CALLBACK(MovementObject@, int);
 
 class CharStateChangeJob : BasicJobInterface {
-    protected int id;
+    protected int char_id;
     protected int initial_state;
     protected CHAR_STATE_CHANGE_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     CharStateChangeJob(){}
 
-    CharStateChangeJob(int _id, CHAR_STATE_CHANGE_CALLBACK @_callback){
-        id = _id;
+    CharStateChangeJob(int _char_id, CHAR_STATE_CHANGE_CALLBACK @_callback){
+        char_id = _char_id;
         @callback = @_callback;
         
-        MovementObject @char = ReadCharacterID(id);
-        SetInitialValues(char);
+        if(MovementObjectExists(char_id)){
+            MovementObject @char = ReadCharacterID(char_id);
+            SetInitialValues(char);
+        }
     }
 
     void ExecuteExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         repeat = callback(char, initial_state);
     }
 
     bool IsExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return true;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         if(initial_state != char.GetIntVar("state")){
             return true;
@@ -41,10 +43,10 @@ class CharStateChangeJob : BasicJobInterface {
     }
 
     bool IsRepeating(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return false;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         if(repeat){
             SetInitialValues(char);

@@ -6,7 +6,7 @@ class OnInputDownJob : BasicJobInterface {
     protected int controller_id;
     protected string input_label;
     protected INPUT_DOWN_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     OnInputDownJob(){}
 

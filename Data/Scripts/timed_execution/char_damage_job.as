@@ -3,36 +3,37 @@
 funcdef bool CHAR_DAMAGE_CALLBACK(MovementObject@, float, float);
 
 class CharDamageJob : BasicJobInterface {
-    protected int id;
+    protected int char_id;
     protected float initial_blood_health;
     protected float initial_permanent_health;
     protected CHAR_DAMAGE_CALLBACK @callback;
-    protected bool repeat;
+    protected bool repeat = false;
 
     CharDamageJob(){}
 
-    CharDamageJob(int _id, CHAR_DAMAGE_CALLBACK @_callback){
-        id = _id;
+    CharDamageJob(int _char_id, CHAR_DAMAGE_CALLBACK @_callback){
+        char_id = _char_id;
         @callback = @_callback;
-        
-        MovementObject @char = ReadCharacterID(id);
-        SetInitialValues(char);
+        if(MovementObjectExists(char_id)){
+            MovementObject @char = ReadCharacterID(char_id);
+            SetInitialValues(char);
+        }
     }
 
     void ExecuteExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         repeat = callback(char, initial_blood_health, initial_permanent_health);
     }
 
     bool IsExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return true;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         if(initial_blood_health != char.GetFloatVar("blood_health")){
             return true;
@@ -45,10 +46,10 @@ class CharDamageJob : BasicJobInterface {
     }
 
     bool IsRepeating(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return false;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         if(repeat){
             SetInitialValues(char);

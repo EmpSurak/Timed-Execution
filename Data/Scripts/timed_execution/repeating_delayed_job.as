@@ -6,7 +6,7 @@ class RepeatingDelayedJob : TimerJobInterface {
     protected float wait;
     protected TIMED_REPEATING_CALLBACK @callback;
     protected float started;
-    protected bool repeat;
+    protected bool repeat = false;
 
     RepeatingDelayedJob(){}
 

@@ -3,30 +3,30 @@
 funcdef void AFTER_CHAR_CALLBACK(MovementObject@);
 
 class AfterCharInitJob : BasicJobInterface {
-    protected int id;
+    protected int char_id;
     protected AFTER_CHAR_CALLBACK @callback;
 
     AfterCharInitJob(){}
 
-    AfterCharInitJob(int _id, AFTER_CHAR_CALLBACK @_callback){
-        id = _id;
+    AfterCharInitJob(int _char_id, AFTER_CHAR_CALLBACK @_callback){
+        char_id = _char_id;
         @callback = @_callback;
     }
 
     void ExecuteExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         callback(char);
     }
 
     bool IsExpired(){
-        if(!MovementObjectExists(id)){
+        if(!MovementObjectExists(char_id)){
             return false;
         }
-        MovementObject @char = ReadCharacterID(id);
+        MovementObject @char = ReadCharacterID(char_id);
 
         return char.GetIntVar("updated") > 0;
     }
