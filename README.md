@@ -13,7 +13,7 @@ TimedExecution timer;
 
 void Init(string str){
     timer.Add(AfterInitJob(function(){
-        Log(info, "Execute once after initialization is finished");
+        Log(info, "Event-driven scripting");
     }));
 }
 
